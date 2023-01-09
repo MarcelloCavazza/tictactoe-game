@@ -10,53 +10,71 @@ namespace tictactoe
 {
     internal class Program
     {
-        static string[,] tictactoeTable =
+        static char[,] tictactoeTable = new char[3,3]
         {
-            {"_ " , "_", " _" },
-            {"_ " , "_" , " _" },
-            {"_ " , "_" , " _"},
+            {'_' , '_', '_' },
+            {'_' , '_' , '_'},
+            {'_' , '_' , '_'},
         };
         static void Main(string[] args)
         {
-            Console.WriteLine("TIC TAC TOE!");
-            Console.WriteLine("Insert O or X");
-            char userLetter = 'n', computerLetter = 'n';
-            bool userAnwserredCorrect = false;
-            while (!userAnwserredCorrect)
+            bool gameIsOver = false;
+
+            while (!gameIsOver)
             {
-                string userChoice = Console.ReadLine();
-                bool result = userChoiceVerification(userChoice);
-                if (result)
+                Console.WriteLine("TIC TAC TOE!");
+                Console.WriteLine("Insert O or X");
+                char userLetter = 'n', computerLetter = 'n';
+                byte userChoiceColumnPosition = 0;
+                bool userAnwserredCorrect = false;
+                while (!userAnwserredCorrect)
                 {
-                    userAnwserredCorrect = true;
-                    switch(userChoice.ToUpper())
+                    string userChoice = Console.ReadLine().ToUpper();
+                    bool result = userChoiceVerification(userChoice);
+                    if (result)
                     {
-                        case "X":
-                            userLetter = 'X';
-                            computerLetter = 'Y';
-                            break;
-                        case"Y":
-                            userLetter = 'Y';
-                            computerLetter = 'X';
-                            break;
-                        default:
-                            break;
+                        userAnwserredCorrect = true;
+                        userLetter = 'X';
+                        switch (userLetter)
+                        {
+                            case 'X':
+                                computerLetter = 'Y';
+                                break;
+                            case 'Y':
+                                computerLetter = 'X';
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+                Console.Clear();
+                Console.WriteLine("TIC TAC TOE!");
+                showTable();
+                Console.WriteLine("");
+                Console.Write("Choosed Letter: ");
+                Console.WriteLine(userLetter);
+                Console.WriteLine("");
+                // TODO: arrumar tratamento de erro de coluna errada
+                Console.WriteLine("Choose a column position:");
+                bool columnPositionIsValid = false;
+                while (!columnPositionIsValid)
+                {
+                    try
+                    {
+                        userChoiceColumnPosition = byte.Parse(Console.ReadLine());
+                        columnPositionIsValid = true;
+                    }
+                    catch (FormatException exception)
+                    {
+                        Console.WriteLine("Choose a right column:");
+                    }
+                }
+
+                Console.WriteLine("Choose a line position:");
+                byte userChoiceLinePosition = byte.Parse(Console.ReadLine());
+                // TODO END
             }
-            Console.Clear();
-            Console.WriteLine("TIC TAC TOE!");
-            showTable();
-            Console.WriteLine("");
-            Console.Write("Choosed Letter: ");
-            Console.WriteLine(userLetter);
-            Console.WriteLine("");
-            Console.WriteLine("Choose a position and write down the X:");
-            //int userChoiceForX = int.TryParse(Console.ReadLine(), out var resultX);
-            Console.WriteLine("Choose a position and write down the Y:");
-            //int userChoiceForY = int.TryParse(Console.ReadLine(), out var resultY);
-
-
         }
 
         static void showTable()
@@ -64,7 +82,16 @@ namespace tictactoe
             for (int i = 0; i < tictactoeTable.GetLength(0);i++) {
                 for (int j = 0; j < tictactoeTable.GetLength(1); j++)
                 {
-                    Console.Write(tictactoeTable[i, j]);
+                    if(j == 1)
+                    {
+                        Console.Write(" ");
+                        Console.Write(tictactoeTable[i, j]);
+                        Console.Write(" ");
+                    }
+                    else
+                    {
+                        Console.Write(tictactoeTable[i, j]);
+                    }
                     if (j == 2)
                     {
                         Console.WriteLine("");
@@ -98,7 +125,7 @@ namespace tictactoe
         }
         static bool letterVerification(string userChoice)
         {
-            if (userChoice.ToUpper() != "O" && userChoice.ToUpper() != "X")
+            if (userChoice != "O" && userChoice != "X")
             {
                 Console.WriteLine("Choose only O or X");
                 return false;
