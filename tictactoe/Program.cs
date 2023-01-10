@@ -12,9 +12,9 @@ namespace tictactoe
     {
         static char[,] tictactoeTable = new char[3,3]
         {
-            {'_' , '_', '_' },
-            {'_' , '_' , '_'},
-            {'_' , '_' , '_'},
+            {'_', '_', '_'},
+            {'_', '_', '_'},
+            {'_', '_', '_'},
         };
         static void Main(string[] args)
         {
@@ -26,6 +26,7 @@ namespace tictactoe
                 Console.WriteLine("Insert O or X");
                 char userLetter = 'n', computerLetter = 'n';
                 byte userChoiceColumnPosition = 0;
+                byte userChoiceLinePosition = 0;
                 bool userAnwserredCorrect = false;
                 while (!userAnwserredCorrect)
                 {
@@ -55,25 +56,38 @@ namespace tictactoe
                 Console.Write("Choosed Letter: ");
                 Console.WriteLine(userLetter);
                 Console.WriteLine("");
-                // TODO: arrumar tratamento de erro de coluna errada
-                Console.WriteLine("Choose a column position:");
-                bool columnPositionIsValid = false;
-                while (!columnPositionIsValid)
+                // TODO: arrumar tratamento de erro de coluna 
+                bool positionIsValid = false;
+                while (!positionIsValid)
                 {
                     try
                     {
+                        Console.WriteLine("Choose a column position:");
                         userChoiceColumnPosition = byte.Parse(Console.ReadLine());
-                        columnPositionIsValid = true;
+                        positionIsValid = true;
                     }
                     catch (FormatException exception)
                     {
-                        Console.WriteLine("Choose a right column:");
+                        Console.WriteLine("Choose a column position:");
                     }
                 }
 
-                Console.WriteLine("Choose a line position:");
-                byte userChoiceLinePosition = byte.Parse(Console.ReadLine());
-                // TODO END
+                positionIsValid = false;
+                while (!positionIsValid)
+                {
+                    try
+                    {
+                        Console.WriteLine("Choose a line position:");
+                        userChoiceLinePosition = byte.Parse(Console.ReadLine());
+                        positionIsValid = true;
+                    }
+                    catch (FormatException exception)
+                    {
+                        Console.WriteLine("Choose a line position:");
+                    }
+                }
+                tictactoeTable[userChoiceColumnPosition, userChoiceLinePosition] = 'X';
+                showTable();
             }
         }
 
